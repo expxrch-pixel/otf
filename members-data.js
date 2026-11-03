@@ -1,7 +1,7 @@
 /**
  * OTF — onythefamily | Central Data Management & Storage Layer
  * Generated for Vercel Static Hosting (Synchronized Roster & Settings)
- * Exported at: 2026-11-03T16:37:46.813Z
+ * Exported at: 2026-11-03T16:54:27.132Z
  */
 
 const OTF_STORAGE_KEYS = {
@@ -12,7 +12,7 @@ const OTF_STORAGE_KEYS = {
 
 const DEFAULT_SETTINGS = {
   "brandShort": "OTF",
-  "brandName": "OnyTheFamily",
+  "brandName": "onythefamily",
   "tagline": "PRIVATE COMMUNITY",
   "motto": "LOYALTY OVER ROYALTY",
   "submotto": "FAMILY FIRST • RESPECT EARNED • NEVER DIVIDED",
@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
   "accentCore": "#e4e4e7",
   "accentSupport": "#a1a1aa",
   "accentMember": "#71717a",
-  "adminPin": "588",
+  "adminPin": "1688",
   "rankNames": {
     "owner": "OWNER",
     "core": "LEADER",
@@ -33,16 +33,19 @@ const DEFAULT_SETTINGS = {
   "bgMediaUrl": "",
   "musicTracks": [
     {
-      "id": "otf_audio_1793714651017",
-      "title": "OTF",
-      "artist": "OTF Clan Beat",
-      "isLocal": true,
-      "url": "idb://otf_audio_1793714651017"
-    },
-    {
       "title": "Took Her to the O",
       "artist": "King Von (OTF Clan Theme)",
       "url": "king-von-took-her-to-the-o.mp3"
+    },
+    {
+      "title": "OTF Anthem — Midnight Ambience",
+      "artist": "onythefamily Beats",
+      "url": "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=trap-future-bass-royalty-free-music-113540.mp3"
+    },
+    {
+      "title": "Loyalty & Honor — Drill Instrumental",
+      "artist": "Dark Street Chill",
+      "url": "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=hip-hop-rock-beats-118000.mp3"
     }
   ]
 };
@@ -50,75 +53,75 @@ const DEFAULT_SETTINGS = {
 const DEFAULT_MEMBERS = [
   {
     "id": "otf_owner_1",
-    "name": "Lastone Winterfell",
-    "role": "owner",
-    "customRoleTitle": "FOUNDER & OWNER",
-    "alias": "OTF",
+    "alias": "",
     "avatar": "https://i.postimg.cc/2SZGL5jK/04.png",
-    "cover": "",
-    "status": "online",
-    "quote": "",
     "bio": "",
-    "house": "OTF — onythefamily",
-    "joinDate": "2024-01-01",
-    "facebook": "https://www.facebook.com/l1otf",
+    "cover": "otf-banner-wave.jpg",
+    "customRoleTitle": "FOUNDER & OWNER",
     "discord": "OTF#0001",
-    "steam": "https://steamcommunity.com",
-    "order": 1
+    "facebook": "https://www.facebook.com/l1otf",
+    "house": "OTF — onythefamily",
+    "joinDate": "",
+    "name": "Lastone Winterfell",
+    "order": 1,
+    "quote": "",
+    "role": "owner",
+    "status": "online",
+    "steam": "https://steamcommunity.com"
   },
   {
     "id": "otf_core_1",
-    "name": "Doze Winterfell",
-    "role": "core",
-    "customRoleTitle": "Leader",
     "alias": "",
     "avatar": "https://i.postimg.cc/3rFZ26TH/download-(1).jpg",
-    "cover": "",
-    "status": "online",
-    "quote": "",
-    "bio": "",
+    "bio": "ผู้คุมทัพหลักและวางแผนยุทธวิธีของ OTF ดูแลความเรียบร้อยและกำลังพล",
+    "cover": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=80",
+    "customRoleTitle": "Leader",
+    "discord": "OTF#0002",
+    "facebook": "https://www.facebook.com/doze.surapong",
     "house": "OTF — onythefamily",
     "joinDate": "2024-02-15",
-    "facebook": "https://www.facebook.com/doze.surapong",
-    "discord": "OTF#0002",
-    "steam": "https://steamcommunity.com",
-    "order": 2
+    "name": "Doze Winterfell",
+    "order": 2,
+    "quote": "คำสั่งชัดเจน การกระทำเด็ดขาด ไม่มีคำว่าถอยหลังในครอบครัวเรา",
+    "role": "core",
+    "status": "online",
+    "steam": "https://steamcommunity.com"
   },
   {
     "id": "otf_core_2",
-    "name": "Narumi Winterfell",
-    "role": "core",
-    "customRoleTitle": "LEADER",
     "alias": "",
     "avatar": "https://i.postimg.cc/Jnmknrtq/886225426-122094750489544487-1614557494042854927-n.jpg",
-    "cover": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80",
-    "status": "online",
-    "quote": "",
     "bio": "",
+    "cover": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80",
+    "customRoleTitle": "Leader",
+    "discord": "OTF#0003",
+    "facebook": "https://www.facebook.com/profile.php?id=61596334614536",
     "house": "OTF — onythefamily",
     "joinDate": "2024-03-01",
-    "facebook": "https://www.facebook.com/profile.php?id=61596334614536",
-    "discord": "otf#0003",
-    "steam": "https://steamcommunity.com",
-    "order": 3
+    "name": "Narumi Winterfell",
+    "order": 3,
+    "quote": "",
+    "role": "core",
+    "status": "away",
+    "steam": "https://steamcommunity.com"
   },
   {
     "id": "otf_sup_1",
-    "name": "Uneverknow OTf",
-    "role": "bigsupport",
-    "customRoleTitle": "SUPPORT",
     "alias": "",
     "avatar": "https://i.postimg.cc/RZSCNWTV/solo-leveling-side-story.jpg",
-    "cover": "",
-    "status": "online",
-    "quote": "",
     "bio": "",
+    "cover": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+    "customRoleTitle": "SUPPORT",
+    "discord": "OTF#0005",
+    "facebook": "https://www.facebook.com/Killertypeshit",
     "house": "OTF — onythefamily",
     "joinDate": "2024-05-01",
-    "facebook": "https://www.facebook.com/Killertypeshit",
-    "discord": "otf#0005",
-    "steam": "https://steamcommunity.com",
-    "order": 5
+    "name": "Uneverknow OTf",
+    "order": 5,
+    "quote": "",
+    "role": "bigsupport",
+    "status": "online",
+    "steam": "https://steamcommunity.com"
   }
 ];
 
