@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="OTF — onythefamily Management Dashboard">
   <title>OTF — จัดการสมาชิก & ตั้งค่า</title>
+  <link rel="icon" type="image/png" href="otf-logo.png">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="otf-logo.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -289,7 +292,9 @@
   <!-- Security Gate / Login Screen -->
   <div class="auth-gate-overlay" id="authGateOverlay">
     <div class="auth-gate-card">
-      <div class="auth-gate-badge">OTF</div>
+      <div class="auth-gate-badge">
+        <img src="otf-logo.png" alt="OTF" style="width: 80%; height: 80%; object-fit: contain;">
+      </div>
       <h2>MANAGEMENT PORTAL</h2>
       <p class="auth-gate-sub">พื้นที่เฉพาะผู้ดูแลและหัวหน้ากลุ่ม OTF (onythefamily)</p>
 
@@ -536,10 +541,64 @@
           บันทึกการตั้งค่า
         </button>
       </div>
+
+      <!-- Cloud Database Sync Card (Firebase Firestore) -->
+      <div class="settings-card" style="border: 1px solid rgba(255, 255, 255, 0.25); margin-top: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="margin-bottom: 4px;">🔥 เชื่อมต่อ Cloud Database (Firebase Firestore แบบ Tataros168)</h3>
+            <p style="color: var(--text-muted); font-size: 13px;">
+              เมื่อเชื่อมต่อ Firebase แล้ว แก้ไขข้อมูลในหน้าแอดมินตอนไหน เว็บหลักบน Vercel จะอัปเดตแบบเรียลไทม์ทันทีทั่วโลก
+            </p>
+          </div>
+          <span id="firebaseStatusBadge" class="card-role-pill" style="border-color: #facc15; color: #facc15;">
+            🟡 โหมด LocalStorage
+          </span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Firebase API Key</label>
+            <input class="form-control" id="fbApiKey" placeholder="AIzaSy...">
+          </div>
+          <div class="form-group">
+            <label>Firebase Project ID</label>
+            <input class="form-control" id="fbProjectId" placeholder="เช่น otf-onythefamily">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px;">
+          <button class="btn-edit" id="btnSaveFirebaseConfig" type="button" style="padding: 10px 18px;">
+            💾 บันทึกการเชื่อมต่อ Firebase
+          </button>
+          <button class="primary-button" id="btnPushToFirebase" type="button" style="padding: 10px 18px; font-size: 13.5px;">
+            🚀 ซิงค์รายชื่อทั้งหมดขึ้น Cloud ทันที
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- TAB 3: BACKUP / RESTORE -->
     <section id="sectionBackup" class="tab-content" hidden>
+      <!-- Vercel Direct Code Export Card -->
+      <div class="settings-card" style="border: 1px solid rgba(255, 255, 255, 0.35); background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div>
+            <div class="card-role-pill" style="border-color: #4ade80; color: #4ade80; background: rgba(34, 197, 94, 0.1); margin-bottom: 8px;">
+              ⚡ อัปเดตขึ้น VERCEL ทันที (ไม่ต้องใช้ดาต้าเบส)
+            </div>
+            <h3 style="margin-bottom: 6px;">ส่งออกไฟล์ members-data.js สำหรับ Vercel</h3>
+            <p style="color: var(--text-muted); font-size: 13.5px; max-width: 650px; line-height: 1.6; margin-bottom: 14px;">
+              เนื่องจากเว็บไซต์บน Vercel เป็นเว็บแบบ Static การแก้ไขข้อมูลในเบราว์เซอร์จะไม่เปลี่ยนโค้ดบน Vercel โดยอัตโนมัติ<br>
+              <strong>วิธีที่ง่ายที่สุด:</strong> กดปุ่มด้านล่างเพื่อดาวน์โหลดไฟล์ <code>members-data.js</code> ที่มีข้อมูลสมาชิกล่าสุดของคุณ แล้วนำไปแทนที่ไฟล์เดิมบน Vercel/GitHub ได้ทันที 100%!
+            </p>
+          </div>
+          <button class="primary-button" id="btnDownloadVercelData" type="button" style="padding: 12px 24px; font-size: 14px;">
+            📥 ดาวน์โหลด members-data.js (อัปขึ้น Vercel)
+          </button>
+        </div>
+      </div>
+
       <div class="settings-card">
         <h3>ส่งออกข้อมูล (Export Backup)</h3>
         <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 16px;">
@@ -667,6 +726,9 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="members-data.js"></script>
   <script src="admin.js"></script>
   <script src="ui-effects.js"></script>

@@ -427,6 +427,7 @@
     setWeather.value = s.weatherEffect || 'embers';
     setMusicUrl.value = (s.musicTracks && s.musicTracks[0]) ? s.musicTracks[0].url : '';
     if (setAdminPin) setAdminPin.value = s.adminPin || '1688';
+    updateFirebaseUI();
   }
 
   btnSaveSettings.addEventListener('click', () => {
@@ -453,6 +454,88 @@
     window.OTF_DATA.saveSettings(updated);
     alert('บันทึกการตั้งค่าเรียบร้อยแล้ว!');
   });
+
+  // Vercel Direct Data Export (No Database needed)
+  const btnDownloadVercelData = document.getElementById('btnDownloadVercelData');
+  if (btnDownloadVercelData) {
+    btnDownloadVercelData.addEventListener('click', () => {
+      if (typeof window.OTF_DATA.generateUpdatedMembersDataFile !== 'function') {
+        alert('ฟังก์ชันสร้างไฟล์ยังไม่พร้อมใช้งาน');
+        return;
+      }
+      const code = window.OTF_DATA.generateUpdatedMembersDataFile();
+      const blob = new Blob([code], { type: 'application/javascript;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'members-data.js';
+      a.click();
+      URL.revokeObjectURL(url);
+      alert('✅ ดาวน์โหลดไฟล์ members-data.js สำเร็จแล้ว!\n\nขั้นตอนต่อไป:\n1. นำไฟล์ members-data.js ที่เพิ่งดาวน์โหลดไปวางทับไฟล์เดิมในโฟลเดอร์โปรเจกต์ของคุณ\n2. อัปขึ้น Vercel / GitHub\n\nเมื่อ Vercel ทำการ Deploy เสร็จ หน้าเว็บหลัก https://onythefamily.vercel.app/ จะแสดงข้อมูลสมาชิกล่าสุดของคุณทันที 100% ครับ!');
+    });
+  }
+
+  // Firebase Config Elements
+  const fbApiKey = document.getElementById('fbApiKey');
+  const fbProjectId = document.getElementById('fbProjectId');
+  const btnSaveFirebaseConfig = document.getElementById('btnSaveFirebaseConfig');
+  const firebaseStatusBadge = document.getElementById('firebaseStatusBadge');
+
+  function updateFirebaseUI() {
+    const isConn = window.OTF_DATA && window.OTF_DATA.isFirebaseConnected && window.OTF_DATA.isFirebaseConnected();
+    if (firebaseStatusBadge) {
+      if (isConn) {
+        firebaseStatusBadge.textContent = '🟢 เชื่อมต่อ Cloud สำเร็จ (Realtime Sync)';
+        firebaseStatusBadge.style.borderColor = '#4ade80';
+        firebaseStatusBadge.style.color = '#4ade80';
+      } else {
+        firebaseStatusBadge.textContent = '🟡 โหมด LocalStorage';
+        firebaseStatusBadge.style.borderColor = '#facc15';
+        firebaseStatusBadge.style.color = '#facc15';
+      }
+    }
+    if (fbApiKey && fbProjectId && window.OTF_DATA && window.OTF_DATA.getFirebaseConfig) {
+      const cfg = window.OTF_DATA.getFirebaseConfig();
+      if (cfg.apiKey) fbApiKey.value = cfg.apiKey;
+      if (cfg.projectId) fbProjectId.value = cfg.projectId;
+    }
+  }
+
+  if (btnSaveFirebaseConfig) {
+    btnSaveFirebaseConfig.addEventListener('click', () => {
+      const apiKey = fbApiKey.value.trim();
+      const projectId = fbProjectId.value.trim();
+
+      if (!apiKey || !projectId) {
+        alert('กรุณากรอกทั้ง Firebase API Key และ Project ID');
+        return;
+      }
+
+      const cfg = {
+        apiKey,
+        authDomain: `${projectId}.firebaseapp.com`,
+        projectId,
+        storageBucket: `${projectId}.appspot.com`,
+        messagingSenderId: "",
+        appId: ""
+      };
+
+      window.OTF_DATA.saveFirebaseConfig(cfg);
+      updateFirebaseUI();
+      alert('บันทึกการเชื่อมต่อ Firebase เรียบร้อยแล้ว! ระบบกำลังเชื่อมต่อฐานข้อมูล Cloud...');
+    });
+  }
+
+  const btnPushToFirebase = document.getElementById('btnPushToFirebase');
+  if (btnPushToFirebase) {
+    btnPushToFirebase.addEventListener('click', () => {
+      const members = window.OTF_DATA.getMembers();
+      window.OTF_DATA.saveMembers(members);
+      const settings = window.OTF_DATA.getSettings();
+      window.OTF_DATA.saveSettings(settings);
+      alert('🚀 ซิงค์ข้อมูลสมาชิกล่าสุดและค่าการตั้งค่าขึ้น Firebase Cloud สำเร็จแล้ว!\nทุกคนที่เข้าเว็บจะเห็นข้อมูลอัปเดตทันทีครับ!');
+    });
+  }
 
   // Backup & Export JSON
   btnExportJSON.addEventListener('click', () => {
