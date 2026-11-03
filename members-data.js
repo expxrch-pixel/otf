@@ -10,6 +10,21 @@ const OTF_STORAGE_KEYS = {
   AUDIO_STATE: 'otf_audio_state_v2'
 };
 
+
+// ---- Cloud error reporting (แจ้งเตือนเมื่อบันทึกขึ้น Firebase ไม่สำเร็จ) ----
+let otfCloudErrorShown = false;
+function reportCloudError(action, err) {
+  console.error('[OTF Cloud] ' + action + ' failed:', err);
+  window.dispatchEvent(new CustomEvent('otf:cloud_error', { detail: { action: action, error: err } }));
+  const onAdmin = typeof location !== 'undefined' && /admin/i.test(location.pathname);
+  if (onAdmin && !otfCloudErrorShown) {
+    otfCloudErrorShown = true;
+    alert('⚠️ บันทึกขึ้น Cloud (Firebase) ไม่สำเร็จ: ' + action + '\n' +
+      'สาเหตุ: ' + ((err && (err.code || err.message)) || err) + '\n\n' +
+      'ถ้าเป็น permission-denied ให้ตั้ง Firestore Rules ใน Firebase Console ให้อนุญาตการเขียน');
+  }
+}
+
 const DEFAULT_SETTINGS = {
   "brandShort": "OTF",
   "brandName": "onythefamily",
@@ -165,7 +180,7 @@ function setupFirebaseRealtimeListeners() {
       localStorage.setItem(OTF_STORAGE_KEYS.MEMBERS, JSON.stringify(liveMembers));
       window.dispatchEvent(new CustomEvent('otf:members_updated', { detail: liveMembers }));
     }
-  }, err => console.warn("Firestore members listener error:", err));
+  }, err => reportCloudError('read members', err));
 
   firestoreDb.collection("otf_config").doc("settings").onSnapshot(doc => {
     if (doc.exists) {
@@ -173,7 +188,7 @@ function setupFirebaseRealtimeListeners() {
       localStorage.setItem(OTF_STORAGE_KEYS.SETTINGS, JSON.stringify(liveSettings));
       window.dispatchEvent(new CustomEvent('otf:settings_updated', { detail: liveSettings }));
     }
-  }, err => console.warn("Firestore settings listener error:", err));
+  }, err => reportCloudError('read settings', err));
 }
 
 if (typeof window !== 'undefined') {
@@ -201,7 +216,9 @@ window.OTF_DATA = {
     }
     const db = initFirebase();
     if (db) {
-      db.collection("otf_config").doc("settings").set(merged, { merge: true }).catch(() => {});
+      db.collection("otf_config").doc("settings").set(merged, { merge: true })
+        .then(() => console.log("☁️ settings saved to Firebase"))
+        .catch(err => reportCloudError("save settings", err));
     }
     return merged;
   },
@@ -233,7 +250,9 @@ window.OTF_DATA = {
         const docRef = db.collection("otf_members").doc(m.id || ("member_" + idx));
         batch.set(docRef, { ...m, order: idx + 1 }, { merge: true });
       });
-      batch.commit().catch(() => {});
+      batch.commit()
+        .then(() => console.log("☁️ members saved to Firebase"))
+        .catch(err => reportCloudError("save members", err));
     }
     return members;
   },
@@ -278,7 +297,8 @@ window.OTF_DATA = {
     this.saveMembers(list);
     const db = initFirebase();
     if (db) {
-      db.collection("otf_members").doc(id).delete().catch(() => {});
+      db.collection("otf_members").doc(id).delete()
+        .catch(err => reportCloudError("delete member", err));
     }
     return list;
   },
